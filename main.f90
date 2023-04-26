@@ -1,9 +1,9 @@
 module mod1
 
     CONTAINS
-       include 'routines/essentials.f95'
-       include 'routines/LU_decomp.f95'
-       include 'routines/main_routines.f95'
+       include 'routines/essentials.f90'
+       include 'routines/LU_decomp.f90'
+       include 'routines/main_routines.f90'
     
     end module mod1
     
