@@ -38,6 +38,7 @@ def forward_substitution(L, B):
     for j in range(m):  # Loop pelas colunas de B
         for i in range(n):  # Loop pelas linhas de L e Y
             # Somatorio dos termos com coeficiente já calculados ( à esquerda do pivo atual i)
+            
             s = sum(L[i][k] * Y[k][j] for k in range(i))
             if (L[i][i] != 0): # Verifica Divisão por 0 ( matrix singular ).
                 Y[i][j] = (B[i][j] - s) / L[i][i] # Calculo do coeficiente na linha e coluna atuais.
