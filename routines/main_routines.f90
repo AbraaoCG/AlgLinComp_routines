@@ -14,11 +14,11 @@ subroutine LU_solver_inplace(A, X, B)
     call forward_substitution_inplace(A, B, Y)
     call back_substitution(A, Y, X)
 
-    write(*,*)'-----------'
-    do i = 1,n
-       write(*,*) X(i,:)
-    enddo
-    write(*,*)'-----------'
+    ! write(*,*)'-----------'
+    ! do i = 1,n
+    !    write(*,*) X(i,:)
+    ! enddo
+    ! write(*,*)'-----------'
 
  end subroutine LU_solver_inplace
  
@@ -37,12 +37,6 @@ subroutine LU_solver_inplace(A, X, B)
     call forward_substitution(L, B, Y)
     call back_substitution(U, Y, X)
 
-    write(*,*)'-----------'
-    do i = 1,n
-       write(*,*) X(i,:)
-    enddo
-    write(*,*)'-----------'
-    
  end subroutine LU_solver
  
 
@@ -61,9 +55,6 @@ subroutine Cholesky_solver(A, X, B)
  
     call cholenskyDecomp(A)
     call forward_substitution(A, B, Y)
-    ! do i = 1,n
-    !     write(*,*) A(i,:)
-    ! enddo
     call back_substitution(A, Y, X)
  
  end subroutine Cholesky_solver

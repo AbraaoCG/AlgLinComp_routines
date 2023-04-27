@@ -34,14 +34,30 @@ program AXB_Solver
 
    B = 0.0
    !call LU_solver(A,B,Im)
-   call LU_solver_inplace(A,B,Im)
+   call LU_solver(A,B,Im)
 
    Im = -1d0
    Call matrix_multiplication(A,B,Im)
 
    ! write(*,*)'-----------'
    ! do i = 1,n
+   !    write(*,*) B(i,:)
+   ! enddo
+   ! write(*,*)'-----------'
+
+   ! write(*,*)'-----------'
+   ! do i = 1,n
    !    write(*,*) Im(i,:)
+   ! enddo
+   ! write(*,*)'-----------'
+
+
+    
+   call Cholesky_solver(A,B,Im)
+
+   ! write(*,*)'-----------'
+   ! do i = 1,n
+   !    write(*,*) B(i,:)
    ! enddo
    ! write(*,*)'-----------'
    

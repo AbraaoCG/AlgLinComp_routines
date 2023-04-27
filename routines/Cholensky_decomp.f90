@@ -12,14 +12,14 @@ subroutine cholenskyDecomp(A)
       do k = 1, j - 1
         sum = sum + A(j,k)**2
       end do
-  
-      A(j,j) = sqrt(A(j,j) - sum)
-  
-      if (abs(A(j,j)) < 1e-12) then
+
+      if ((abs(A(j,j) - sum)  < 1e-12 ) ) then
         info = -1
         stop 'WARNING1: A não é uma matriz positiva definida'
       endif
-  
+
+      A(j,j) = sqrt(A(j,j) - sum)
+
       do i = j+1, n
         sum = 0.0
         do k = 1, j - 1
@@ -27,12 +27,7 @@ subroutine cholenskyDecomp(A)
         end do
   
         A(i,j) = (A(i,j) - sum) / A(j,j)
-      end do
-    end do
-  
-    do i = 1, n
-      do j = i+1, n
-        A(i,j) = 0.0
+        A(j,i) = A(i,j) ! L transposta já incluida junto na matrix A
       end do
     end do
   
