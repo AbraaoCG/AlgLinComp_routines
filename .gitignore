@@ -1,0 +1,5 @@
+# Aquivos de compilação com gfortran e ifort
+*.exe
+*.out
+*.obj
+mod1.mod1
