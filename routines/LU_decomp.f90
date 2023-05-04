@@ -46,7 +46,7 @@ subroutine LU_decomposition_inplace(A)
 
    do j = 1, n ! Iteração em linhas
 
-      do i = 1, j ! Iteração em colunas até a coluna j. (Atualizar Matrix L dentro de A)
+      do i = 1, j ! Iteração em colunas até a coluna j. (Atualizar Matrix U dentro de A)
          s = 0
          do k = 1, i - 1
             s = s + A(i,k) * A(k,j)
@@ -60,7 +60,7 @@ subroutine LU_decomposition_inplace(A)
          return
       endif
       
-      ! Iteração em colunas de j até n. (Atualizar Matrix U dentro de A)
+      ! Iteração em colunas de j até n. (Atualizar Matrix L dentro de A)
       do i = j + 1, n
          s = 0
          do k = 1, j - 1
