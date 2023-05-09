@@ -24,7 +24,9 @@ program AXB_Solver
    ! read(*,'(A)') filename
 
    
-   filename = 'matrizes/Matriz_A.dat'
+   ! filename = 'matrizes/Matriz_A.dat'
+
+   filename = 'matrizes/exA_2.dat'
 
    ! Descobrindo número de linhas de A (n).
    n = 0
@@ -56,21 +58,15 @@ program AXB_Solver
       call LU_decomposition_inplace(A)
    else if(ICOD .eq. 2) then
       call cholenskyDecomp(A)
-   else if(ICOD .eq. 3) then
-      print*,'3'
-   else if(ICOD .eq. 4) then
-      print*,'4'
    endif
-
-
-   
    
    do while (filename .ne. '-1')
  
       ! write(*,*) 'Insira nome do arquivo contendo B: (Caso deseja fechar o programa, digite -1)'
       ! read(*,'(A)') filename
 
-      filename = 'matrizes/Vetor_B_01.dat'
+      ! filename = 'matrizes/Vetor_B_01.dat'
+      filename = 'matrizes/exB_2.dat'
 
       if (filename .eq. '-1') then 
          stop
@@ -93,7 +89,6 @@ program AXB_Solver
 
          do i = 1,nb
             read(11,*) B(i,:)
-            !write(*,*) A(i,:)
          enddo
          
          if ((ICOD .eq. 1 ) ) then
@@ -104,16 +99,19 @@ program AXB_Solver
             call forward_substitution(A, B, Y) ! L . Y = B ;  
             call back_substitution(A, Y, X) ! U . X = Y  
 
-         ! else if ((ICOD .eq. 3 ) ) then
-         !    call forward_substitution(A, B, Y) ! L . Y = B ;  
-         !    call back_substitution(A, Y, X) ! U . X = Y  
+         else if ((ICOD .eq. 3 ) ) then
+            call jacobi_method(A, X, B)
 
-         ! else if ((ICOD .eq. 4 ) ) then
-         !    call forward_substitution(A, B, Y) ! L . Y = B ;  
-         !    call back_substitution(A, Y, X) ! U . X = Y  
+         else if ((ICOD .eq. 4 ) ) then
+            call Gauss_Seidel_method(A, X, B)
          endif
          
-         
+         ! Imprimir X
+         write(*,*) 'Matrix solução X: '
+         do i = 1,n
+            write(*,*) X(i,:)
+         enddo
+
          
          ! ! Verificar corretude.
          ! do i = 1,n 
