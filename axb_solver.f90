@@ -6,7 +6,7 @@ module mod1
        include 'routines/Cholensky_decomp.f90'
        include 'routines/main_routines.f90'
        
-    end module mod1
+end module mod1
     
 program AXB_Solver
    use mod1
@@ -20,13 +20,13 @@ program AXB_Solver
    cb = 1
    ICOD = 1
 
-   ! write(*,*) 'Insira nome do arquivo contendo a matrix A: '
-   ! read(*,'(A)') filename
+   write(*,*) 'Insira o caminho até o arquivo contendo a matrix A: '
+   read(*,'(A)') filename
 
    
    ! filename = 'matrizes/Matriz_A.dat'
 
-   filename = 'matrizes/exA_2.dat'
+   ! filename = 'matrizes/exA_2.dat'
 
    ! Descobrindo número de linhas de A (n).
    n = 0
@@ -62,11 +62,11 @@ program AXB_Solver
    
    do while (filename .ne. '-1')
  
-      ! write(*,*) 'Insira nome do arquivo contendo B: (Caso deseja fechar o programa, digite -1)'
-      ! read(*,'(A)') filename
+      write(*,*) 'Insira o caminho até o arquivo contendo B: (Caso deseja fechar o programa, digite -1)'
+      read(*,'(A)') filename
 
       ! filename = 'matrizes/Vetor_B_01.dat'
-      filename = 'matrizes/exB_2.dat'
+      ! filename = 'matrizes/exB_2.dat'
 
       if (filename .eq. '-1') then 
          stop
@@ -80,7 +80,6 @@ program AXB_Solver
          READ(11,*,iostat=io)
          IF (io/=0) GO TO 90
          nb = nb + 1
-         END DO
       enddo
       90 rewind(11)
 
@@ -112,75 +111,8 @@ program AXB_Solver
             write(*,*) X(i,:)
          enddo
 
-         
-         ! ! Verificar corretude.
-         ! do i = 1,n 
-         !    write(*,*) B(i,:)
-         ! enddo
-         ! write(*,*)' ------------------- '
-         
-         ! CALL matrix_multiplication(A2,X,B)
-
-         ! do i = 1,n 
-         !    write(*,*) B(i,:)
-         ! enddo
-
-
-      else
-         write(*,*) 'Warning 2 : A matrix and B matrix must have same number of lines.'
+         deallocate(B,Y,X)
       endif
-
-   
-
-
-   ! ---------------------------- Código de Teste de funcionamento dos algorítimos.
-
-   ! Criando a matriz A manualmente
-   ! A = reshape([2.0, 1.0, 1.0, &
-   !    4.0, 3.0, 3.0, &
-   !    8.0, 7.0, 9.0], [n,n])
-
-   ! A = reshape([4.0, 1.0, 1.0, &             
-   ! 1.0, 5.0, 2.0, &            
-   !  1.0, 2.0, 6.0], [3,3])
-
-
-   ! ! Criando a matriz identidade
-   ! Im = 0.0
-   ! do i = 1, n
-   !    Im(i,i) = 1.0
-   ! end do
-
-   ! B = 0.0
-   ! !call LU_solver(A,B,Im)
-   ! call LU_solver(A,B,Im)
-
-   ! Im = -1d0
-   ! Call matrix_multiplication(A,B,Im)
-
-   ! write(*,*)'-----------'
-   ! do i = 1,n
-   !    write(*,*) B(i,:)
-   ! enddo
-   ! write(*,*)'-----------'
-
-   ! write(*,*)'-----------'
-   ! do i = 1,n
-   !    write(*,*) Im(i,:)
-   ! enddo
-   ! write(*,*)'-----------'
-
-
-    
-   ! call Cholesky_solver(A,B,Im)
-
-   ! Im  = -1d0
-   ! write(*,*)'-----------'
-   ! do i = 1,n
-   !    write(*,*) B(i,:)
-   ! enddo
-   ! write(*,*)'-----------'
-   
+   enddo
+      
 end program AXB_Solver
-
-
