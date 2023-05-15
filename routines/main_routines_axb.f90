@@ -113,7 +113,7 @@ subroutine jacobi_method(A, X, B )
                endif
             enddo
             ! Verificar se A é singular.
-            if(A(i,i) <= 1.0e-15) then
+            if(A(i,i) <= 1.0e-12) then
                write(*,*) 'WARNING: Singular Matrix'
                stop
              endif

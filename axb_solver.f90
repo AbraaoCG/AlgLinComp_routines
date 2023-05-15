@@ -4,7 +4,7 @@ module mod1
        include 'routines/essentials.f90'
        include 'routines/LU_decomp.f90'
        include 'routines/Cholensky_decomp.f90'
-       include 'routines/main_routines.f90'
+       include 'routines/main_routines_axb.f90'
        
 end module mod1
     
@@ -14,7 +14,7 @@ program AXB_Solver
    integer ::n,nb, i, ICOD, io, cb
    character*50 :: filename
    real*8, allocatable :: auxVector(:)
-   real*8, allocatable :: A(:,:), X(:,:), B(:,:), Y(:,:), A2(:,:)
+   real*8, allocatable :: A(:,:), X(:,:), B(:,:), Y(:,:)
 
    ! Definir número de colunas em cada Vetor B.
    cb = 1
@@ -39,12 +39,11 @@ program AXB_Solver
    rewind(11)
 
    ! Alocando espaço para A, B e solução X.
-  allocate(A(n,n),A2(n,n))
+  allocate(A(n,n))
   
   ! Lendo matriz A
   do i = 1,n
    read(11,*)A(i,:)
-   A2(i,:) = A(i,:)
   enddo
   CLOSE (11)
   
