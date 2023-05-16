@@ -44,23 +44,20 @@ subroutine LU_decomposition_inplace(A)
 
    n = size(A, 1)
 
-   do j = 1, n ! Iteração em linhas
-
-      do i = 1, j ! Iteração em colunas até a coluna j. (Atualizar Matrix U dentro de A)
+   do j = 1, n ! Iteração em linhas, descendo na posição do pivô.
+      do i = 1, j ! (Atualizar Matrix U dentro de A)
          s = 0
          do k = 1, i - 1
             s = s + A(i,k) * A(k,j)
          enddo
          A(i,j) = A(i,j) - s
       end do
-
       !Se elemento da diagonal principal for 0, então a matriz é singular.
-      if (A(j,j) == 0.0d0) then 
+      if (A(j,j) < 1e-12) then 
          info = j
-         return
-      endif
-      
-      ! Iteração em colunas de j até n. (Atualizar Matrix L dentro de A)
+         write(*,*) "WARNING: Singular Matrix, can't continue !"
+      endif     
+      ! (Atualizar Matrix L dentro de A)
       do i = j + 1, n
          s = 0
          do k = 1, j - 1
@@ -69,7 +66,6 @@ subroutine LU_decomposition_inplace(A)
          A(i,j) = (A(i,j) - s) / A(j,j)
       end do
    end do
-
    info = 0
 end subroutine LU_decomposition_inplace
 

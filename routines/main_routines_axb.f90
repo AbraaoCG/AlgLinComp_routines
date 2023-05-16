@@ -121,11 +121,7 @@ subroutine jacobi_method(A, X, B )
             ! Recalcular X(i,1)
            X(i,1) = (B(i,1) - sumTmp) / A(i,i) !  
        end do
-      ! if(iter .eq. 80) then
-         
-      !    stop
-      ! endif
-       ! Verifica a convergência
+      ! Cálculo de norma euclidiana da diferença entre os vetores.
       sumTmp = 0
       sumTmp2 = 0
       do i = 1,n
@@ -139,12 +135,6 @@ subroutine jacobi_method(A, X, B )
            exit
        endif
    end do
-   
-   ! ! Imprime a solução
-   ! write(*,*) 'Solução:'
-   ! do i = 1, n
-   !     write(*,*) X(i,1)
-   ! end do
    
 end subroutine jacobi_method
 
@@ -165,17 +155,6 @@ subroutine Gauss_Seidel_method(A, X, B )
    X = 1.0 ! Vetor solução inicial.
    iter_max = 1000
    tol = 1.0e-5
-   flagDiagonalDominant = 1
-   write(*,*)'--------------'
-   ! Verifica se a matriz A é diagonalmente dominante e emite um warning caso não seja.
-   do i = 1, n
-       if (abs(A(i,i)) <= sum(abs(A(i,:))) - abs(A(i,i))) then
-         flagDiagonalDominant = 0
-       endif
-   end do
-   if ( flagDiagonalDominant .eq. 0) then
-      write(*,*) "WARNING: Matrix isn't diagonally dominant, convergency not guaranteed. "
-   endif
    
    ! Método iterativo de Jacobi
    do iter = 1, iter_max     
@@ -202,10 +181,6 @@ subroutine Gauss_Seidel_method(A, X, B )
             ! Recalcular X(i,1)
            X(i,1) = (B(i,1) - sumTmp) / A(i,i) !  
        end do
-      ! if(iter .eq. 80) then
-         
-      !    stop
-      ! endif
        ! Verifica a convergência
       sumTmp = 0
       sumTmp2 = 0
@@ -220,11 +195,5 @@ subroutine Gauss_Seidel_method(A, X, B )
            exit
        endif
    end do
-   
-   ! ! Imprime a solução
-   ! write(*,*) 'Solução:'
-   ! do i = 1, n
-   !     write(*,*) X(i,1)
-   ! end do
    
 end subroutine Gauss_Seidel_method
