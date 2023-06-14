@@ -9,9 +9,9 @@ import numpy as np
 def func(x):
     g = 9.806
     k = 0.00341
-    f1 = np.log10(np.cosh(x*np.sqrt(g*k)))- 50 # Método bissecante: a,b = -600,-650 ; Método de Newton x0 = 
-    f2 = ( ( 4 * np.cos(x) ) - ( np.e**(2*x) ) )
-    return f1
+    f1 = np.log10(np.cosh(x*np.sqrt(g*k)))- 50 # Método bissecante: a,b = -600,-650 ; Método de Newton x0 = -600
+    f2 = ( ( 4 * np.cos(x) ) - ( np.e**(2*x) ) ) # Método bissecante: a,b = 1,0 ; Método de Newton x0 = 0-10
+    return f2
 
 # Cálculo da derivada primeira de x de forma literal ( com expressão dada ).
 def d1_func(x):
@@ -21,7 +21,7 @@ def d1_func(x):
     df1 = (np.tanh(x*np.sqrt(g*k)) * np.sqrt(g*k)) / np.log(10)
     df2 = ( -4 * np.sin(x) )- ((np.e**(2*x)) * 2)
 
-    return df1
+    return df2
 
 # Cálculo da derivada primeira de x de forma numérica ( com diferenças finitas ).
 
@@ -98,6 +98,22 @@ def newtonMethod(method):
 
     # Se não retornar é porque não convergiu
     print('O método de Newton não convergiu!')
+
+# ------------------------------------------------------------------------------------------------------
+# Definir algorítimo do método da interpolação Inversa.
+
+def invInterpolMethod():
+    tol = 1e-5
+    itMax = 10000
+    print(f'Método da Interpolação Inversa utilizando: \nNúmero máximo de iterações = {itMax}\n')
+
+    x1 = input('Insira x1: ')
+    x2 = input('Insira x2: ')
+    x3 = input('Insira x3: ')    
+
+    y1 = func(x1) ; y2 = func(x1) ; y3 = func(x1)
+
+    xi = (y2 * y3 * x1)/ ((y1 - y2) * (y1)) + (y1 * y3 * x2)/ ((y2 - y1) * () )+ (y1 * y2 * x3)/ (() * ())
 
 # ------------------------------------------------------------------------------------------------------
 # Apresentação do programa
