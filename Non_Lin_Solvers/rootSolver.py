@@ -10,8 +10,8 @@ def func(x):
     g = 9.806
     k = 0.00341
     f1 = np.log10(np.cosh(x*np.sqrt(g*k)))- 50 # Método bissecante: a,b = -600,-650 ; Método de Newton x0 = -600
-    f2 = ( ( 4 * np.cos(x) ) - ( np.e**(2*x) ) ) # Método bissecante: a,b = 1,0 ; Método de Newton x0 = 0-10
-    return f2
+    #f2 = ( ( 4 * np.cos(x) ) - ( np.e**(2*x) ) ) # Método bissecante: a,b = 1,0 ; Método de Newton x0 = 0-10
+    return f1
 
 # Cálculo da derivada primeira de x de forma literal ( com expressão dada ).
 def d1_func(x):
@@ -19,9 +19,9 @@ def d1_func(x):
     k = 0.00341
     # Derivada de f1 e f2 para método de Newton Original
     df1 = (np.tanh(x*np.sqrt(g*k)) * np.sqrt(g*k)) / np.log(10)
-    df2 = ( -4 * np.sin(x) )- ((np.e**(2*x)) * 2)
+    #df2 = ( -4 * np.sin(x) )- ((np.e**(2*x)) * 2)
 
-    return df2
+    return df1
 
 # Cálculo da derivada primeira de x de forma numérica ( com diferenças finitas ).
 
@@ -106,15 +106,39 @@ def invInterpolMethod():
     tol = 1e-5
     itMax = 10000
     print(f'Método da Interpolação Inversa utilizando: \nNúmero máximo de iterações = {itMax}\n')
+    # Obter Valores de incialização
+    x1 = float(input('Insira x1: '))
+    x2 = float(input('Insira x2: '))
+    x3 = float(input('Insira x3: '))    
+    # Algorítimo principal
+    xi = 1e+36 # Inicializo 'xi' como 'teto'.
+    it = 0
+    while(it < itMax):
 
-    x1 = input('Insira x1: ')
-    x2 = input('Insira x2: ')
-    x3 = input('Insira x3: ')    
+        y1 = func(x1) ; y2 = func(x2) ; y3 = func(x3)
+        xi_next = (y2 * y3 * x1) / ((y1 - y2) * (y1 - y3)) + (y1 * y3 * x2) / ((y2 - y1) * (y2 - y3) )+ (y1 * y2 * x3) / ((y3 - y1) * (y3 - y2))
 
-    y1 = func(x1) ; y2 = func(x1) ; y3 = func(x1)
-
-    xi = (y2 * y3 * x1)/ ((y1 - y2) * (y1)) + (y1 * y3 * x2)/ ((y2 - y1) * () )+ (y1 * y2 * x3)/ (() * ())
-
+        if (abs(xi_next - xi) < tol):
+            print(f'Convergência alcançada em {it} iterações!')
+            return xi_next
+        # Loop para identificar maior elemento entre os f(xk), k = 1,2,3
+        cont = 1 ; max = 0 ; imax = -1
+        for x in [y1,y2,y3]:
+            if (abs(x) > max):
+                max = abs(x)
+                imax = cont
+            cont += 1
+        # Trocar xk por xi_next calculado.
+        match imax:
+            case 1:
+                x1 = xi_next
+            case 2:
+                x2 = xi_next
+            case 3:
+                x3 = xi_next
+        xi = xi_next
+        it += 1
+    print('Convergência não alcançada')
 # ------------------------------------------------------------------------------------------------------
 # Apresentação do programa
 print("Esse programa é destinado ao cálculo de raizes de funções utilizando três diferentes métodos")
@@ -133,7 +157,7 @@ match ICOD:
         root = newtonMethod(method)
         print(f'A raiz da função é {root}')
     case 3:
-        pass
-
+        root = invInterpolMethod()
+        print(f'A raiz da função é {root}')
 
 
