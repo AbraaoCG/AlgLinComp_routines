@@ -71,9 +71,10 @@ import numpy as np
 
 def integrate_polynomial(f, a, b, n):
     # Função para realizar a integração polinomial
-    x = np.linspace(a, b, n+1)  # Pontos de integração igualmente espaçados
+    x = np.linspace(a, b, n)  # Pontos de integração igualmente espaçados
     print(x)
-    w = np.ones_like(x) / n  # Pesos iguais para a integração polinomial
+    # w = np.ones_like(x) / n  # Pesos iguais para a integração polinomial
+    w = getW(x,a,b)
     print(w)
     integral = np.dot(f(x), w) * (b - a)  # Cálculo da integral
     return integral
@@ -95,22 +96,29 @@ def gauss_weights(n):
     x, w = np.polynomial.legendre.leggauss(n)  # Função do NumPy para obter os pontos de integração e pesos da quadratura de Gauss
     return x, w
 
-def construct_vandermonde_matrix(points):
-    n = len(points) - 1
-    V = np.vander(points, increasing=True)
+def construct_vandermonde_matrix(xArr):
+    # V = np.vander(xArr, increasing=True)
+    n = len(xArr)
+    V = np.ndarray(shape=(n,n))
+    for i in range(n):
+        for j in range(n):
+            V[i][j] = xArr[j]**i
     return V
 
 def construct_k_vector(a, b, n):
-    k = np.arange(n+1)
-    K = (b**k - a**k) / k
-    K[0] = 1.0  # Tratamento especial para k = 0 para evitar divisão por zero
+    K = np.ndarray(shape=(n,1))
+    for i in range(1,n):
+        K[i][0] = (b**i - a**i) / i
+    # K[0] = 1.0  # Tratamento especial para k = 0 para evitar divisão por zero
     return K
 
-def solve_integration_system(points, a, b):
-    n = len(points) - 1
-    V = construct_vandermonde_matrix(points)
-    K = construct_k_vector(a, b, n)
-    W = np.linalg.solve(V, K)
+def getW(xArr, a, b):
+    n = len(xArr)
+    print(xArr)
+    VandM_Matrix = construct_vandermonde_matrix(xArr)
+    print(VandM_Matrix)
+    KMatrix = construct_k_vector(a, b, n)
+    W = np.linalg.solve(VandM_Matrix, KMatrix)
     return W
 
 
