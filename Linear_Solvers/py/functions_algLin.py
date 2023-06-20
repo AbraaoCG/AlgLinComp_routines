@@ -87,3 +87,7 @@ def matrix_multiplication(A, B):
             for k in range(n):
                 C[i][j] += A[i][k] * B[k][j]
     return C
+
+A = [[64.09606402,64.09606402,4.006004],[2.001     ,  2.001      , 2.001  ],[ 3.003001 ,  -1.       ,   1.  ]]
+B = [[1,0,0],[0,1,0],[0,0,1]]
+print(LU_Solver(A,B))

@@ -17,7 +17,7 @@ program AXB_Solver
    real*8, allocatable :: A(:,:), X(:,:), B(:,:), Y(:,:)
 
    ! Definir número de colunas em cada Vetor B.
-   cb = 1
+   cb = 3
 
    ! Ler caminho do arquivo que contém a matrix A
    write(*,*) 'Insira o caminho ate o arquivo contendo a matrix A: '
@@ -39,6 +39,7 @@ program AXB_Solver
   ! Lendo matriz A
   do i = 1,n
    read(11,*)A(i,:)
+   write(*,*) A(i,:)
   enddo
   CLOSE (11)
   
@@ -91,6 +92,7 @@ program AXB_Solver
          endif
          ! Imprimir X
          write(*,*) 'Matrix solucao X: '
+         write(*,*) n, cb
          do i = 1,n
             write(*,*) X(i,:)
          enddo

@@ -7,10 +7,11 @@ import numpy as np
 
 # Cálculo de X
 def func(x):
-    g = 9.806
-    k = 0.00341
-    f1 = np.log10(np.cosh(x*np.sqrt(g*k)))- 50 # Método bissecante: a,b = -600,-650 ; Método de Newton x0 = -600
+    #g = 9.806
+    #k = 0.00341
+    #f1 = np.log10(np.cosh(x*np.sqrt(g*k)))- 50 # Método bissecante: a,b = -600,-650 ; Método de Newton x0 = -600
     #f2 = ( ( 4 * np.cos(x) ) - ( np.e**(2*x) ) ) # Método bissecante: a,b = 1,0 ; Método de Newton x0 = 0-10
+    return 4*np.cos(x) - np.exp(2*x)
     return f1
 
 # Cálculo da derivada primeira de x de forma literal ( com expressão dada ).
@@ -20,7 +21,6 @@ def d1_func(x):
     # Derivada de f1 e f2 para método de Newton Original
     df1 = (np.tanh(x*np.sqrt(g*k)) * np.sqrt(g*k)) / np.log(10)
     #df2 = ( -4 * np.sin(x) )- ((np.e**(2*x)) * 2)
-
     return df1
 
 # Cálculo da derivada primeira de x de forma numérica ( com diferenças finitas ).
@@ -51,6 +51,8 @@ def bissecMethod():
             return np.nan    
         xi = (a+b) / 2
         fi = func(xi)
+        print(it, a,b,xi, fi)
+        
         it += 1
         if (fi < 0):
             a = xi
@@ -77,8 +79,10 @@ def newtonMethod(method):
 
     # Algorítimo de aproximação da raiz de f(x)
     xi = xa + dx # x na iteração atual.
+    x_next = np.nan
     it = 0
     while ( it < itMax ):
+        print(it, xa,xi, x_next )
         # Cálculo de f'(x), em função do método ( Original ou Secante ).
         if (method == 0): # Original
             df_xi = d1_func(xi)
@@ -87,7 +91,6 @@ def newtonMethod(method):
         
         # Cálculo do x próximo
         x_next = xi - (func(xi) / df_xi)
-
         if(abs(x_next - xi) <= tol):
             print(f'O método de Newton convergiu em {it} iterações!')
             return x_next # x_next é a raiz da função.
@@ -117,7 +120,7 @@ def invInterpolMethod():
 
         y1 = func(x1) ; y2 = func(x2) ; y3 = func(x3)
         xi_next = (y2 * y3 * x1) / ((y1 - y2) * (y1 - y3)) + (y1 * y3 * x2) / ((y2 - y1) * (y2 - y3) )+ (y1 * y2 * x3) / ((y3 - y1) * (y3 - y2))
-
+        print(x1,x2,x3)
         if (abs(xi_next - xi) < tol):
             print(f'Convergência alcançada em {it} iterações!')
             return xi_next

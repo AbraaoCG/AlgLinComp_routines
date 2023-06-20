@@ -62,6 +62,7 @@ def newtonMethod(funcPath):
     hList = [0.001 ] * numArgsMax
     xArray = np.ones(numArgsMax) # X0 = Vetor coluna preenchido com '1's
     jacobianMatrix = getJacobianM(functionsVector,numArgsMax,xArray,hList) # Jacobiana Inicial
+    
     fX_Vector = np.ndarray(shape=(numFunc,1))
     it = 0
     # Algorítimo principal
@@ -106,7 +107,7 @@ def broydenMethod(funcPath):
     hList = [0.001 ] * numArgsMax
     xArray = np.ones(numArgsMax) # X0 = Vetor coluna preenchido com '1's
     jacobianMatrix = getJacobianM(functionsVector,numArgsMax,xArray,hList) # Jacobiana Inicial
-    
+
     fX_Vector = np.ndarray(shape=(numFunc,1))
     it = 0
     # Algorítimo principal
@@ -144,13 +145,16 @@ def broydenMethod(funcPath):
 
 
 funcPath = 'funcoes.txt'
-xArr = broydenMethod(funcPath)
+xArr = newtonMethod(funcPath)
 print(xArr)
 
 functionsVector,numArgsMax = getFunctions(funcPath)
 for f in functionsVector:
     print(f(*xArr))
 
+# print(getJacobianM(functionsVector,numArgsMax,[1,1,1],[0.001,0.001,0.001]))
+
+# ---------------------------------------
 
 # xArray = [2,1,1]
 # functionsVector,numArgsMatrix = getFunctions('funcoes.txt')
