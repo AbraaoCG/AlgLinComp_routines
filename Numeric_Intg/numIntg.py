@@ -12,10 +12,8 @@ def integrate_polynomial(f, a, b, n):
 def integrate_gauss(f, a, b, n, weight_func):
     # Função para realizar a integração por quadratura de Gauss
     x, w = weight_func(n)  # Obtenção dos pontos de integração e pesos usando a função fornecida
-    x_scaled = 0.5 * (b - a) * x + 0.5 * (b + a)  # Escalonamento dos pontos de integração para o intervalo [a, b]
-    w_scaled = 0.5 * (b - a) * w  # Escalonamento dos pesos
-    # W = getW(x_scaled,a,b)
-    # print(f'{x} \n\n {w} \n {x_scaled} \n\n {w_scaled}')
+    x_scaled = 0.5 * (b - a) * x + 0.5 * (b + a) 
+    w_scaled = 0.5 * (b - a) * w 
     integral = np.dot(f(x_scaled), w_scaled)  # Cálculo da integral
     return integral
 
@@ -24,9 +22,9 @@ def f(x):
     # return (x**3 + 2)
     return np.exp(- (x**2) / 2) / np.sqrt(2 * np.pi)# x ** 3 + 2 * x ** 2 + 3 * x + 4
 
-# Exemplo de função para cálculo dos pesos na quadratura de Gauss
+# Função para cálculo dos pesos na quadratura de Gauss
 def gauss_weights(n):
-    x, w = np.polynomial.legendre.leggauss(n)  # Função do NumPy para obter os pontos de integração e pesos da quadratura de Gauss
+    x, w = np.polynomial.legendre.leggauss(n)  # Obtem os pontos de integração e pesos da quadratura de Gauss tabelados
     return x, w
 
 def construct_vandermonde_matrix(xArr):
@@ -70,6 +68,7 @@ def getFunctions(path):
         nome, expressao = linha.strip().split('=')
         args = nome.split('(')[1].split(')')[0].split(',')
         expressao = expressao.replace('log','np.log10')
+        expressao = expressao.replace('ln','np.log')
         expressao = expressao.replace('sen','np.sin')
         expressao = expressao.replace('cos','np.cos')
         expressao = expressao.replace('e','np.e')
@@ -87,7 +86,7 @@ def Poly_Integ_adaptative(f, a, b, tol):
 
 def QuadGauss_Integ_adaptative(f, a, b, tol):
     
-    return integrate_gauss(f, a, b, 2, gauss_weights)
+    return integrate_gauss(f, a, b, 3, gauss_weights)
 
 # # Exemplo de uso da função de integração polinomial
 # integral_polynomial = integrate_polynomial(f, 0, 5, 10)
