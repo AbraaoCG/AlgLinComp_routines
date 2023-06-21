@@ -4,6 +4,7 @@ import numpy as np
 def integrate_polynomial(f, a, b, n):
     # Função para realizar a integração polinomial
     x = np.linspace(a, b, n)  # Pontos de integração igualmente espaçados
+    print(x)
     # w = np.ones_like(x) / n  # Pesos iguais para a integração polinomial
     W = getW(x,a,b)
     integral = np.dot(f(x), W) # Cálculo da integral
@@ -104,7 +105,39 @@ def QuadGauss_Integ_adaptative(f, a, b, tol):
         it+= 1
     print(f'Não houve convergência para a tolerância desejada em {itMax} iterações.')
 
-ICOD = int(input("Programa de Integração numérica. Defina a função no arquivo 'funcaoInt.txt' e selecione o tipo de integração desejado:\n 1 : Integração Polinomial\n 2 : Integração por Quadratura de Gauss\n Seleção = "))
+def simpson_Rule(f,a,b,L):
+    return (L/6) * (f(a) + 4*f((a+b)/2) + f(b))
+
+def simpson_Rule_adaptative(f, a, b, tol):
+    itMax = 50
+    L = b - a
+    Ik = simpson_Rule(f,a,b,L)  # Calcula integral com 3 pontos e 1 sub-intervalo.
+    it = 1 ; n = 3
+    while(it < itMax):
+        # Parâmetros da iteração.
+        numS = 2**it # Número de subintervalos.
+        tSub = L*(1/2)**it # Tamanho de um subintevalo.
+        n = int(3 + (2 * ( ((2**(it)) - 1 ) / 1 ))) # PA de segunda ordem que indica número de pontos.
+        # É preciso iterar no número de subintervalos e somar as integras associadas a cada um.
+        Ik_proximo = 0
+        b_new = a # 'b_new' é setado como a ( inicio do intervalo de integração )
+        for j in range(1,numS+1):
+            a_new = b_new # Novo 'a' para regra de simpson = recebe inicio do intervalo de int ou fim do subintervalo anterior.
+            b_new = a_new + tSub # Novo 'b' para regra de simpson. = é o inicio do subintervalo + tamanho do subintervalo.
+            Ik_proximo += simpson_Rule(f,a_new,b_new,tSub) # L novo é o tamanho do subintervalo.
+        # Supoe-se que f seja uma função de uma variável e realiza a regra de simpson.
+        tolk = abs(Ik_proximo - Ik) / abs(Ik_proximo)
+        print(f'{numS} Sub-intervalos e {n} pontos: \ntolk = {tolk}  ;  I{it+1} = {Ik_proximo}')
+        Ik = Ik_proximo
+        
+        if (tolk < tol):
+            print(f'Tolerância desejada alcançada com n = {n}')
+            return Ik_proximo
+        it+= 1
+    print(f'Não houve convergência para a tolerância desejada em {itMax} iterações.')
+
+
+ICOD = print("Programa de Integração numérica adaptativa utilizando regra de simpson em um número crescente de subintervalos.")
 
 funcs,numF = getFunctions('funcaoInt.txt')
 
@@ -114,14 +147,7 @@ if(numF > 0):
     b = float(input("Insira b: "))
     tol = float(input("Insira a tolerância aceita: "))
 
-    if (ICOD == 1):
-        # Uso da função de integração polinomial
-        integral_polynomial = Poly_Integ_adaptative(f, a, b, tol)
-        print("Integração Polinomial:", integral_polynomial)
-    elif (ICOD == 2):
-        # Uso da função de integração por quadratura de Gauss
-        integral_gauss = QuadGauss_Integ_adaptative(f, a, b, tol)
-        print("Integração Gauss:", integral_gauss)
-    
+    If = simpson_Rule_adaptative(f, a, b, tol)
+    print(f'\nIntegral = {If}')
 else:
     print("Certifique-se de inserir a função f(x) no arquivo 'funcaoInt.txt', no formato f(x) = ...função...")
