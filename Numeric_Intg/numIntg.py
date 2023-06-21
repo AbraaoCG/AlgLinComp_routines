@@ -4,7 +4,6 @@ import numpy as np
 def integrate_polynomial(f, a, b, n):
     # Função para realizar a integração polinomial
     x = np.linspace(a, b, n)  # Pontos de integração igualmente espaçados
-    print(x)
     # w = np.ones_like(x) / n  # Pesos iguais para a integração polinomial
     W = getW(x,a,b)
     integral = np.dot(f(x), W) # Cálculo da integral
@@ -50,21 +49,20 @@ def getW(xArr, a, b):
 def getFunctions(path):
     with open(path, 'r') as arquivo:
         linhas = arquivo.readlines()
-
     for linha in linhas:
         nome, expressao = linha.strip().split('=')
-
     funcoes = []
     numArgsF = []
     for linha in linhas:
         nome, expressao = linha.strip().split('=')
         args = nome.split('(')[1].split(')')[0].split(',')
+        expressao = expressao.replace('sqrt','np.sqrt')
         expressao = expressao.replace('log','np.log10')
         expressao = expressao.replace('ln','np.log')
         expressao = expressao.replace('sen','np.sin')
         expressao = expressao.replace('cos','np.cos')
-        expressao = expressao.replace('e','np.e')
-        # print('lambda ' + ','.join(args) + ':' + expressao)
+        expressao = expressao.replace('exp','np.exp')
+        expressao = expressao.replace('pi','np.pi')
         funcao = eval('lambda ' + ','.join(args) + ':' + expressao)
         funcoes.append(funcao)
         numArgsF.append(len(args))
@@ -131,18 +129,66 @@ def simpson_Rule_adaptative(f, a, b, tol):
         it+= 1
     print(f'Não houve convergência para a tolerância desejada em {itMax} iterações.')
 
+def programa_simpsonAdaptativo():
+    print("Programa de Integração numérica adaptativa utilizando regra de simpson em um número crescente de subintervalos.")
+    funcs,numF = getFunctions('funcaoInt.txt')
+    if(numF > 0):
+        f = funcs[0]
+        a = float(input("Seja a e b os limites de integração: a --> b\nInsira a: "))
+        b = float(input("Insira b: "))
+        tol = float(input("Insira a tolerância aceita: "))
 
-ICOD = print("Programa de Integração numérica adaptativa utilizando regra de simpson em um número crescente de subintervalos.")
+        If = simpson_Rule_adaptative(f, a, b, tol)
+        print(f'\nIntegral = {If}')
+    else:
+        print("Certifique-se de inserir a função f(x) no arquivo 'funcaoInt.txt', no formato f(x) = ...função...")
 
-funcs,numF = getFunctions('funcaoInt.txt')
+def programa_IntAdaptativa():
+    ICOD = int(input("Programa de Integração numérica. Defina a função no arquivo 'funcaoInt.txt' e selecione o tipo de integração desejado:\n 1 : Integração Polinomial\n 2 : Integração por Quadratura de Gauss\n Seleção = "))
 
-if(numF > 0):
-    f = funcs[0]
-    a = float(input("Seja a e b os limites de integração: a --> b\nInsira a: "))
-    b = float(input("Insira b: "))
-    tol = float(input("Insira a tolerância aceita: "))
+    funcs,numF = getFunctions('funcaoInt.txt')
 
-    If = simpson_Rule_adaptative(f, a, b, tol)
-    print(f'\nIntegral = {If}')
-else:
-    print("Certifique-se de inserir a função f(x) no arquivo 'funcaoInt.txt', no formato f(x) = ...função...")
+    if(numF > 0):
+        f = funcs[0]
+        a = float(input("Seja a e b os limites de integração: a --> b\nInsira a: "))
+        b = float(input("Insira b: "))
+        tol = float(input("Insira a tolerância aceita: "))
+        if (ICOD == 1):
+            # Uso da função de integração polinomial
+            integral_polynomial = Poly_Integ_adaptative(f, a, b, tol)
+            print("Integração Polinomial:", integral_polynomial)
+        elif (ICOD == 2):
+            # Uso da função de integração por quadratura de Gauss
+            integral_gauss = QuadGauss_Integ_adaptative(f, a, b, tol)
+            print("Integração Gauss:", integral_gauss)
+        
+    else:
+        print("Certifique-se de inserir a função f(x) no arquivo 'funcaoInt.txt', no formato f(x) = ...função...")
+
+def programa_Int():
+    ICOD = int(input("Programa de Integração numérica. Defina a função no arquivo 'funcaoInt.txt' e selecione o tipo de integração desejado:\n 1 : Integração Polinomial\n 2 : Integração por Quadratura de Gauss\n Seleção = "))
+
+    funcs,numF = getFunctions('funcaoInt.txt')
+
+    if(numF > 0):
+        f = funcs[0]
+        a = float(input("Seja a e b os limites de integração: a --> b\nInsira a: "))
+        b = float(input("Insira b: "))
+        n = int(input('Insira o número de pontos de integração: '))
+        if (ICOD == 1):
+            # Uso da função de integração polinomial
+            integral_polynomial = integrate_polynomial(f=f, a=a, b=b, n=n)
+            print("Integração Polinomial:", integral_polynomial)
+        elif (ICOD == 2):
+            # Uso da função de integração por quadratura de Gauss
+            integral_gauss = integrate_gauss(f=f, a=a, b=b, n=n,weight_func=gauss_weights)
+            print("Integração Gauss:", integral_gauss)
+        
+    else:
+        print("Certifique-se de inserir a função f(x) no arquivo 'funcaoInt.txt', no formato f(x) = ...função...")
+
+# programa_simpsonAdaptativo()
+
+programa_IntAdaptativa()
+
+# programa_Int()
