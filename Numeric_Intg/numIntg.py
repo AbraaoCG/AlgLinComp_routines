@@ -18,11 +18,6 @@ def integrate_gauss(f, a, b, n, weight_func):
     integral = np.dot(f(x_scaled), w_scaled)  # Cálculo da integral
     return integral
 
-# Exemplo de função a ser integrada
-def f(x):
-    # return (x**3 + 2)
-    return np.exp(- (x**2) / 2) / np.sqrt(2 * np.pi)# x ** 3 + 2 * x ** 2 + 3 * x + 4
-
 # Função para cálculo dos pesos na quadratura de Gauss
 def gauss_weights(n):
     x, w = np.polynomial.legendre.leggauss(n)  # Obtem os pontos de integração e pesos da quadratura de Gauss tabelados
